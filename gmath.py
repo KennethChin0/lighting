@@ -18,9 +18,12 @@ DIFFUSE = 1
 SPECULAR = 2
 LOCATION = 0
 COLOR = 1
-SPECULAR_EXP = 4
+SPECULAR_EXP = 3
 
 def get_lighting(normal, view, ambient, light, areflect, dreflect, sreflect):
+    normalize(view)
+    normalize(normal)
+    normalize(light[LOCATION])
     a = calculate_ambient(ambient, areflect)
     d = calculate_diffuse(light, dreflect, normal)
     s = calculate_specular(light, sreflect, view, normal)
@@ -35,8 +38,6 @@ def calculate_ambient(alight, areflect):
 
 
 def calculate_diffuse(light, dreflect, normal):
-    normalize(normal)
-    normalize(light[LOCATION])
 
     dP = dot_product(normal, light[LOCATION])
     r = light[COLOR][0] * dreflect[0] * dP
@@ -46,8 +47,6 @@ def calculate_diffuse(light, dreflect, normal):
 
 
 def calculate_specular(light, sreflect, view, normal):
-    normalize(normal)
-    normalize(light[LOCATION])
 
     dP = dot_product(normal, light[LOCATION])
     t = [normal[0] * dP, normal[1] * dP, normal[2] * dP]
